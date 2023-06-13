@@ -12,17 +12,13 @@ const getOne = (req, res) => {
         res.status(404).send('Error track not found');
       }
     })
-    .catch((err) =>
-      res.status(500).send('Error retrieving data from database')
-    );
+    .catch(() => res.status(500).send('Error retrieving data from database'));
 };
 
 const getAll = (req, res) => {
   db.query('SELECT * FROM track')
     .then(([alltracks]) => res.json(alltracks))
-    .catch((err) =>
-      res.status(500).send('Error retrieving data from database')
-    );
+    .catch(() => res.status(500).send('Error retrieving data from database'));
 };
 
 // Route POST
@@ -96,7 +92,7 @@ const updateTracks = (req, res) => {
         res.sendStatus(204);
       }
     })
-    .catch((err) => res.status(500).send('Error editing track'));
+    .catch(() => res.status(500).send('Error editing track'));
 };
 
 const deleteTracks = (req, res) => {
@@ -110,7 +106,7 @@ const deleteTracks = (req, res) => {
         res.sendStatus(204);
       }
     })
-    .catch((err) => res.status(500).send('Error deleting track'));
+    .catch(() => res.status(500).send('Error deleting track'));
 };
 
 module.exports = { getOne, getAll, postTracks, updateTracks, deleteTracks };
