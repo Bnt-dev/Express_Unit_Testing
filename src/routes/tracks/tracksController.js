@@ -52,7 +52,17 @@ const postTracks = (req, res) => {
 
 
 const updateTracks = (req, res) => {
-  res.status(200).send('Update route is OK');
+  const id = parseInt(req.params.id)
+  const { title, youtube_url, id_album } = req.body
+  db
+    .query("UPDATE track SET title = ?, youtube_url = ?, id_album = ? WHERE id = ?", [title, youtube_url, id_album, id])
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.status(404).send('Not found')
+      }
+      else { res.sendStatus(204) }
+    })
+    .catch((err) => res.status(500).send('Error editing track'))
 };
 
 
@@ -60,7 +70,20 @@ const updateTracks = (req, res) => {
 
 
 const deleteTracks = (req, res) => {
-  res.status(200).send('Delete route is OK');
+  const id = parseInt(req.params.id)
+
+  db
+    .query("DELETE from track WHERE id = ?", [id])
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.send(404).sned('Not found')
+      }
+      else { res.sendStatus(204) }
+    })
+    .catch((err) => res.status(500).send('Error deleting track'))
 };
+
+
+
 
 module.exports = { getOne, getAll, postTracks, updateTracks, deleteTracks };
