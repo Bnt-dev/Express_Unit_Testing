@@ -12,7 +12,7 @@ const getOne = (req, res) => {
     .query("SELECT * FROM track WHERE id = ?", [id])
     .then(([track]) => {
       if (track[0] != null) {
-        res.json(track[0]).sendStatus(200)
+        res.json(track[0])
       }
       else {
         res.status(404).send('Error track not found')
@@ -28,7 +28,7 @@ const getOne = (req, res) => {
 const getAll = (req, res) => {
   db
     .query("SELECT * FROM track")
-    .then(([alltracks]) => res.json(alltracks).sendStatus(201))
+    .then(([alltracks]) => res.json(alltracks))
     .catch((err) => res.status(500).send('Error retrieving data from database'))
 };
 
@@ -76,7 +76,7 @@ const deleteTracks = (req, res) => {
     .query("DELETE from track WHERE id = ?", [id])
     .then(([result]) => {
       if (result.affectedRows === 0) {
-        res.send(404).sned('Not found')
+        res.status(404).send('Not found')
       }
       else { res.sendStatus(204) }
     })
