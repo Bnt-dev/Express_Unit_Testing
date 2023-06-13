@@ -2,15 +2,41 @@ const connexion = require('../../../db-config');
 const db = connexion.promise();
 
 const getAll = (req, res) => {
-  res.status(200).send('Get All route is OK');
+  db
+    .query("SELECT * FROM albums")
+    .then(([results]) => res.json(results))
+    .catch((err) => res.status(500).send('Error retrieving data from database'))
 };
+
+
+
+
 
 const getOne = (req, res) => {
-  res.status(200).send('Get One route is OK');
+  const id = parseInt(req.params.id)
+
+  db
+    .query('SELECT * FROM albums WHERE id = ?', [id])
+    .then(([results]) => {
+      if (results.length) {
+        res.json(results)
+      }
+      else { res.status(404).send('Not found') }
+    })
+    .catch((err) => res.status(500).send('Error retrieving data from database'))
 };
 
+
+
+
+
 const getTracksByAlbumId = (req, res) => {
-  res.status(200).send('Get Albums route is OK');
+  const id = parseInt(req.params.id)
+
+  db
+    .query('SELECT title FROM tracks WHERE id = ?', [id])
+    .then(([results]) => res.json(results))
+    .catch((err) => res.send(404).send('found'))
 };
 
 const postAlbums = (req, res) => {
